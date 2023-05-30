@@ -191,13 +191,14 @@ export function createKeyEmit(option?: keyEmitOpt) {
         events: recursionEvents,
         callback?: (codePoints: number[]) => void): SequenceDescriptor => {
 
-        const flattedEvents = (function func(ev) {
+        const flattedEvents = (function func(ev): Exclude<depth0, SequenceDescriptor>[] {
             const isFlatArray = ev.every(v => typeof v !== 'object');
             if (isFlatArray) {
                 return ev as Exclude<depth0, SequenceDescriptor>[];
             }
-            const flatted = (events.flat(Infinity as 1) as depth0[]).map(v => typeof v === 'object' ? v.events : v);
-            return func(flatted);
+            const flatted = (ev.flat(Infinity as 1) as depth0[]);
+            const seqDec = flatted.map(v => typeof v === 'object' ? v.events : v);
+            return func(seqDec);
         })(events);
 
         if (flattedEvents.length === 0) {
@@ -268,7 +269,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
     });
 
     detectSequence([ArrowUp, ArrowUp, ArrowDown, ArrowDown, ArrowLeft, ArrowRight, ArrowLeft, ArrowRight, 'a', 'b'], (codePoints) => {
-        console.log('Kon' + 'ami');
+        console.log('exit');
         process.exit(0);
     });
 
