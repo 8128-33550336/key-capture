@@ -5,6 +5,8 @@
 
 </div>
 
+[![publish](https://github.com/8128-33550336/key-capture/actions/workflows/publish.yml/badge.svg?event=push)](https://github.com/8128-33550336/key-capture/actions/workflows/publish.yml)
+
 [Package](https://github.com/8128-33550336/key-capture/pkgs/npm/key-capture)
 
 言語: [English](./README.md)
