@@ -65,6 +65,24 @@ type keyEvents = specialKeys & {
 };
 interface keyEmitOpt {
 }
+type depth0 = ((keyof aByteCharType) | SequenceDescriptor | number | ((
+    name: string,
+    codePoint: number,
+    keySpecialName: (keyof aByteCharType) | null,
+    ascii?: {
+        control?: {
+            withoutControl: string;
+        };
+        isPrintable: boolean,
+        isDelete: boolean,
+    },
+) => boolean));
+type recursionEvents = readonly (depth0 | recursionEvents)[];
+
+export interface SequenceDescriptor {
+    events: depth0[];
+    listen(callback: (codePoints: number[]) => void): this;
+}
 
 export function createKeyEmit(option?: keyEmitOpt) {
     const keyEventEmitter = new TypedEventEmitter<keyEvents>();
@@ -168,24 +186,6 @@ export function createKeyEmit(option?: keyEmitOpt) {
             readingChar = stringIterator.next();
         }
     };
-    type depth0 = ((keyof aByteCharType) | SequenceDescriptor | number | ((
-        name: string,
-        codePoint: number,
-        keySpecialName: (keyof aByteCharType) | null,
-        ascii?: {
-            control?: {
-                withoutControl: string;
-            };
-            isPrintable: boolean,
-            isDelete: boolean,
-        },
-    ) => boolean));
-    type recursionEvents = readonly (depth0 | recursionEvents)[];
-
-    interface SequenceDescriptor {
-        events: depth0[];
-        listen(callback: (codePoints: number[]) => void): this;
-    }
 
     const detectSequence = (
         events: recursionEvents,
@@ -268,7 +268,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
         keyEventEmitter.emit('DeleteKey', 'DeleteKey', codePoints);
     });
 
-    detectSequence([ArrowUp, ArrowUp, ArrowDown, ArrowDown, ArrowLeft, ArrowRight, ArrowLeft, ArrowRight, 'a', 'b'], (codePoints) => {
+    const Konami = detectSequence([ArrowUp, ArrowUp, ArrowDown, ArrowDown, ArrowLeft, ArrowRight, ArrowLeft, ArrowRight, 'a', 'b'], (codePoints) => {
         console.log('exit');
         process.exit(0);
     });
@@ -276,6 +276,16 @@ export function createKeyEmit(option?: keyEmitOpt) {
     let isListening = false;
     return {
         keyEventEmitter: keyEventEmitter as eventTypedAddListener<keyEvents>,
+        extendSequence: {
+            detectSequence,
+            CSI,
+            ArrowUp,
+            ArrowDown,
+            ArrowRight,
+            ArrowLeft,
+            DeleteKey,
+            Konami,
+        },
         start: () => {
             if (isListening) {
                 return;

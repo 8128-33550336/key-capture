@@ -5,8 +5,14 @@ export const createCapture = (doKeyEmit: boolean = true) => {
         const capture = getCapture();
         const keyEmitter = getKeyEmitter();
 
+        keyEmitter.extendSequence.detectSequence(['Control.C', 'Control.C'], () => {
+            console.log('exit');
+            process.exit(0);
+        });
+
         return {
             keyEventEmitter: keyEmitter.keyEventEmitter,
+            extendSequence: keyEmitter.extendSequence,
             start() {
                 console.log('start');
                 keyEmitter.start();
