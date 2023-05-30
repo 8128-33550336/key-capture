@@ -1,6 +1,16 @@
 import { getKeyEmitter } from "./key";
 import { getCapture } from "./term";
-export const createCapture = (doKeyEmit: boolean = true, autoExit: boolean = true) => {
+export const createCapture = <T extends true | false = true>(doKeyEmit?: T extends true ? true | undefined : false, autoExit: boolean = true): (T extends true ? {
+    keyEventEmitter: ReturnType<typeof getKeyEmitter>['keyEventEmitter'],
+    extendSequence: ReturnType<typeof getKeyEmitter>['extendSequence'],
+    start(): void,
+    stop(): void,
+    getIsCapturing(): boolean;
+} : {
+    start(): void,
+    stop(): void,
+    getIsCapturing(): boolean;
+}) => {
     if (doKeyEmit) {
         const capture = getCapture();
         const keyEmitter = getKeyEmitter();
@@ -26,11 +36,11 @@ export const createCapture = (doKeyEmit: boolean = true, autoExit: boolean = tru
                 capture.stop();
             },
             getIsCapturing: capture.getIsCapturing
-        };
+        } as any;
 
     } else {
         const capture = getCapture();
 
-        return capture;
+        return capture as any;
     }
 };
