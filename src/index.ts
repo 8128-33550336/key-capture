@@ -1,14 +1,16 @@
 import { getKeyEmitter } from "./key";
 import { getCapture } from "./term";
-export const createCapture = (doKeyEmit: boolean = true) => {
+export const createCapture = (doKeyEmit: boolean = true, autoExit: boolean = true) => {
     if (doKeyEmit) {
         const capture = getCapture();
         const keyEmitter = getKeyEmitter();
 
-        keyEmitter.extendSequence.detectSequence(['Control.C', 'Control.C'], () => {
-            console.log('exit');
-            process.exit(0);
-        });
+        if (autoExit) {
+            keyEmitter.extendSequence.detectSequence(['Control.C', 'Control.C'], () => {
+                console.log('exit');
+                process.exit(0);
+            });
+        }
 
         return {
             keyEventEmitter: keyEmitter.keyEventEmitter,
