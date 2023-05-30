@@ -32,5 +32,3 @@ export const createCapture = (doKeyEmit: boolean = true) => {
         return capture;
     }
 };
-
-createCapture(true).start();
