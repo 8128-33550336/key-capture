@@ -1,11 +1,9 @@
 <samp>
 <div align="center">
 
-# typedEventEmitter
+# key_capture
 
 </div>
-
-[![publish](https://github.com/8128-33550336/typedEventEmitter/actions/workflows/publish.yml/badge.svg?branch=main&event=push)](https://github.com/8128-33550336/typedEventEmitter/actions/workflows/publish.yml)
 
 [Package](https://github.com/8128-33550336/key-capture/pkgs/npm/key-capture)
 
@@ -26,7 +24,7 @@
 ```
 
 ```
-$ npm i @8128-33550336/typedeventemitter
+$ npm i @8128-33550336/key-capture
 ```
 
 # 例
