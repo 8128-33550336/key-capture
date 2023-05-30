@@ -1,7 +1,7 @@
 <samp>
 <div align="center">
 
-# key_capture
+# key-capture
 
 </div>
 
