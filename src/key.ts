@@ -168,7 +168,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
             readingChar = stringIterator.next();
         }
     };
-    type depth0 = ((keyof aByteCharType) | number | ((
+    type depth0 = ((keyof aByteCharType) | SequenceDescriptor | number | ((
         name: string,
         codePoint: number,
         keySpecialName: (keyof aByteCharType) | null,
@@ -182,45 +182,65 @@ export function createKeyEmit(option?: keyEmitOpt) {
     ) => boolean));
     type recursionEvents = readonly (depth0 | recursionEvents)[];
 
+    interface SequenceDescriptor {
+        events: depth0[];
+        listen(callback: (codePoints: number[]) => void): this;
+    }
+
     const detectSequence = (
         events: recursionEvents,
-        callback?: (codePoints: number[]) => void): depth0[] => {
+        callback?: (codePoints: number[]) => void): SequenceDescriptor => {
 
-        const flattedEvents = events.flat(Infinity as 1) as depth0[];
+        const flattedEvents = (function func(ev) {
+            const isFlatArray = ev.every(v => typeof v !== 'object');
+            if (isFlatArray) {
+                return ev as Exclude<depth0, SequenceDescriptor>[];
+            }
+            const flatted = (events.flat(Infinity as 1) as depth0[]).map(v => typeof v === 'object' ? v.events : v);
+            return func(flatted);
+        })(events);
+
         if (flattedEvents.length === 0) {
             throw new Error('Array length must be greater than or equal to 1.');
         }
+        const descriptor: SequenceDescriptor = {
+            events: flattedEvents,
+            listen(innerCallback) {
+                let codePoints: number[] = [];
+
+                keyEventEmitter.on('aByteKeyDown', (name, codePoint, specialName, ascii) => {
+                    const event = flattedEvents[codePoints.length];
+                    const match = (() => {
+                        if (event === undefined) {
+                            return false;
+                        }
+                        if (typeof event === 'function') {
+                            return event(name, codePoint, specialName, ascii);
+                        } else if (typeof event === 'number') {
+                            return codePoint === event;
+                        } else {
+                            return specialName === event;
+                        }
+                    })();
+                    if (match) {
+                        codePoints.push(codePoint);
+                        if (codePoints.length === flattedEvents.length) {
+                            innerCallback(codePoints);
+                            codePoints = [];
+                        }
+                    } else {
+                        codePoints = [];
+                    }
+                });
+
+                return descriptor;
+            },
+        };
         if (callback === undefined) {
-            return flattedEvents;
+            return descriptor;
         }
-
-        let codePoints: number[] = [];
-
-        keyEventEmitter.on('aByteKeyDown', (name, codePoint, specialName, ascii) => {
-            const event = flattedEvents[codePoints.length];
-            const match = (() => {
-                if (event === undefined) {
-                    return false;
-                }
-                if (typeof event === 'function') {
-                    return event(name, codePoint, specialName, ascii);
-                } else if (typeof event === 'number') {
-                    return codePoint === event;
-                } else {
-                    return specialName === event;
-                }
-            })();
-            if (match) {
-                codePoints.push(codePoint);
-                if (codePoints.length === flattedEvents.length) {
-                    callback(codePoints);
-                    codePoints = [];
-                }
-            } else {
-                codePoints = [];
-            }
-        });
-        return flattedEvents;
+        descriptor.listen(callback);
+        return descriptor;
     };
 
     const CSI = detectSequence(['Escape', '['], (codePoints) => {
