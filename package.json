@@ -1,4 +1,24 @@
 {
+  "name": "@8128-33550336/key-capture",
+  "version": "0.0.0",
+  "description": "keyboard capture",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/8128-33550336/key-capture.git"
+  },
+  "files": [
+    "dist/**/*",
+    "!**/*.test.*",
+    "README.md",
+    "README-ja.md"
+  ],
+  "author": "8128-33550336",
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js"
