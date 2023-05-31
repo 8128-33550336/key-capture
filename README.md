@@ -13,7 +13,8 @@ Language: [Japanese](./README-ja.md)
 
 # About
 
-This turns off ECHO etc. This is useful for building CLI apps.
+This turns off ECHO etc. This is useful for building CLI apps. It supports
+184key combinations.
 
 # Install
 
