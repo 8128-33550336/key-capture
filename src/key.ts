@@ -57,7 +57,7 @@ type specialKeys = aByteCharType &
     shiftFunctionKeyTypes &
     pageKey;
 export type keyEvents = specialKeys & {
-    aByteKeyDown: [
+    keydown: [
         name: string,
         codePoint: number,
         keySpecialName: (keyof aByteCharType) | null,
@@ -69,7 +69,7 @@ export type keyEvents = specialKeys & {
             isDelete: boolean,
         },
     ];
-    keydown: [
+    keydownSequence: [
         name: string,
         codePoint: number | number[],
         keySpecialName: (keyof specialKeys) | null,
@@ -207,8 +207,8 @@ export function createKeyEmit(option?: keyEmitOpt) {
             } else {
             }
 
-            keyEventEmitter.emit('aByteKeyDown', readingChar.value, codePoint, emittedEvent, asciiInfo);
             keyEventEmitter.emit('keydown', readingChar.value, codePoint, emittedEvent, asciiInfo);
+            keyEventEmitter.emit('keydownSequence', readingChar.value, codePoint, emittedEvent, asciiInfo);
 
             readingChar = stringIterator.next();
         }
@@ -236,7 +236,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
             listen(innerCallback) {
                 let codePoints: number[] = [];
 
-                keyEventEmitter.on('aByteKeyDown', (name, codePoint, specialName, ascii) => {
+                keyEventEmitter.on('keydown', (name, codePoint, specialName, ascii) => {
                     const event = flattedEvents[codePoints.length];
                     const match = (() => {
                         if (event === undefined) {
@@ -272,27 +272,27 @@ export function createKeyEmit(option?: keyEmitOpt) {
 
     const CSI = detectSequence(['Escape', '['], (codePoints) => {
         keyEventEmitter.emit('CSI', 'CSI', codePoints);
-        keyEventEmitter.emit('keydown', 'CSI', codePoints, 'CSI');
+        keyEventEmitter.emit('keydownSequence', 'CSI', codePoints, 'CSI');
     });
 
     const ArrowUp = detectSequence([CSI, (c) => c === 'A'], (codePoints) => {
         keyEventEmitter.emit('ArrowUp', 'ArrowUp', codePoints);
-        keyEventEmitter.emit('keydown', 'ArrowUp', codePoints, 'ArrowUp');
+        keyEventEmitter.emit('keydownSequence', 'ArrowUp', codePoints, 'ArrowUp');
     });
 
     const ArrowDown = detectSequence([CSI, (c) => c === 'B'], (codePoints) => {
         keyEventEmitter.emit('ArrowDown', 'ArrowDown', codePoints);
-        keyEventEmitter.emit('keydown', 'ArrowDown', codePoints, 'ArrowDown');
+        keyEventEmitter.emit('keydownSequence', 'ArrowDown', codePoints, 'ArrowDown');
     });
 
     const ArrowRight = detectSequence([CSI, (c) => c === 'C'], (codePoints) => {
         keyEventEmitter.emit('ArrowRight', 'ArrowRight', codePoints);
-        keyEventEmitter.emit('keydown', 'ArrowRight', codePoints, 'ArrowRight');
+        keyEventEmitter.emit('keydownSequence', 'ArrowRight', codePoints, 'ArrowRight');
     });
 
     const ArrowLeft = detectSequence([CSI, (c) => c === 'D'], (codePoints) => {
         keyEventEmitter.emit('ArrowLeft', 'ArrowLeft', codePoints);
-        keyEventEmitter.emit('keydown', 'ArrowLeft', codePoints, 'ArrowLeft');
+        keyEventEmitter.emit('keydownSequence', 'ArrowLeft', codePoints, 'ArrowLeft');
     });
 
 
@@ -300,40 +300,40 @@ export function createKeyEmit(option?: keyEmitOpt) {
 
     const SS3 = detectSequence(['Escape', 0x4f], (codePoints) => {
         keyEventEmitter.emit('SS3', 'SS3', codePoints);
-        keyEventEmitter.emit('keydown', 'SS3', codePoints, 'SS3');
+        keyEventEmitter.emit('keydownSequence', 'SS3', codePoints, 'SS3');
     });
 
     const Home = detectSequence([CSI, 0x48], (codePoints) => {
         keyEventEmitter.emit('Home', 'Home', codePoints);
-        keyEventEmitter.emit('keydown', 'Home', codePoints, 'Home');
+        keyEventEmitter.emit('keydownSequence', 'Home', codePoints, 'Home');
     });
     const End = detectSequence([CSI, 0x46], (codePoints) => {
         keyEventEmitter.emit('End', 'End', codePoints);
-        keyEventEmitter.emit('keydown', 'End', codePoints, 'End');
+        keyEventEmitter.emit('keydownSequence', 'End', codePoints, 'End');
     });
     const Find = detectSequence([CSI, '1', 0x7e], (codePoints) => {
         keyEventEmitter.emit('Find', 'Find', codePoints);
-        keyEventEmitter.emit('keydown', 'Find', codePoints, 'Find');
+        keyEventEmitter.emit('keydownSequence', 'Find', codePoints, 'Find');
     });
     const Insert = detectSequence([CSI, '2', 0x7e], (codePoints) => {
         keyEventEmitter.emit('Insert', 'Insert', codePoints);
-        keyEventEmitter.emit('keydown', 'Insert', codePoints, 'Insert');
+        keyEventEmitter.emit('keydownSequence', 'Insert', codePoints, 'Insert');
     });
     const DeleteKey = detectSequence([CSI, '3', 0x7e], (codePoints) => {
         keyEventEmitter.emit('DeleteKey', 'DeleteKey', codePoints);
-        keyEventEmitter.emit('keydown', 'DeleteKey', codePoints, 'DeleteKey');
+        keyEventEmitter.emit('keydownSequence', 'DeleteKey', codePoints, 'DeleteKey');
     });
     const Select = detectSequence([CSI, '4', 0x7e], (codePoints) => {
         keyEventEmitter.emit('Select', 'Select', codePoints);
-        keyEventEmitter.emit('keydown', 'Select', codePoints, 'Select');
+        keyEventEmitter.emit('keydownSequence', 'Select', codePoints, 'Select');
     });
     const PageUp = detectSequence([CSI, '5', 0x7e], (codePoints) => {
         keyEventEmitter.emit('PageUp', 'PageUp', codePoints);
-        keyEventEmitter.emit('keydown', 'PageUp', codePoints, 'PageUp');
+        keyEventEmitter.emit('keydownSequence', 'PageUp', codePoints, 'PageUp');
     });
     const PageDown = detectSequence([CSI, '6', 0x7e], (codePoints) => {
         keyEventEmitter.emit('PageDown', 'PageDown', codePoints);
-        keyEventEmitter.emit('keydown', 'PageDown', codePoints, 'PageDown');
+        keyEventEmitter.emit('keydownSequence', 'PageDown', codePoints, 'PageDown');
     });
 
     const specialKeys = {
