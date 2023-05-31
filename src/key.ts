@@ -32,7 +32,7 @@ type shiftFunctionKeyTypes = { [P in
     'shift.f19' | 'shift.f20'
     ]: [name: P, codePoint: number[]] };
 
-type pageKey = { [P in 'Home' | 'End' | 'PageUp' | 'PageDown' | 'Insert' | 'DeleteKey']: [name: P, codePoint: number[]] };
+type pageKey = { [P in 'Home' | 'End' | 'PageUp' | 'PageDown' | 'Insert' | 'DeleteKey' | 'Find' | 'Select']: [name: P, codePoint: number[]] };
 
 type ascii0x40ControlTypes = { [P in typeof ascii0x40 extends readonly (infer T extends string)[] ? `Control.${T}` : never]: [name: P, codePoint: number] };
 
@@ -311,13 +311,21 @@ export function createKeyEmit(option?: keyEmitOpt) {
         keyEventEmitter.emit('End', 'End', codePoints);
         keyEventEmitter.emit('keydown', 'End', codePoints, 'End');
     });
-    const DeleteKey = detectSequence([CSI, '3', 0x7e], (codePoints) => {
-        keyEventEmitter.emit('DeleteKey', 'DeleteKey', codePoints);
-        keyEventEmitter.emit('keydown', 'DeleteKey', codePoints, 'DeleteKey');
+    const Find = detectSequence([CSI, '1', 0x7e], (codePoints) => {
+        keyEventEmitter.emit('Find', 'Find', codePoints);
+        keyEventEmitter.emit('keydown', 'Find', codePoints, 'Find');
     });
     const Insert = detectSequence([CSI, '2', 0x7e], (codePoints) => {
         keyEventEmitter.emit('Insert', 'Insert', codePoints);
         keyEventEmitter.emit('keydown', 'Insert', codePoints, 'Insert');
+    });
+    const DeleteKey = detectSequence([CSI, '3', 0x7e], (codePoints) => {
+        keyEventEmitter.emit('DeleteKey', 'DeleteKey', codePoints);
+        keyEventEmitter.emit('keydown', 'DeleteKey', codePoints, 'DeleteKey');
+    });
+    const Select = detectSequence([CSI, '4', 0x7e], (codePoints) => {
+        keyEventEmitter.emit('Select', 'Select', codePoints);
+        keyEventEmitter.emit('keydown', 'Select', codePoints, 'Select');
     });
     const PageUp = detectSequence([CSI, '5', 0x7e], (codePoints) => {
         keyEventEmitter.emit('PageUp', 'PageUp', codePoints);
@@ -337,6 +345,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
         ArrowLeft,
         Insert, Home, PageUp,
         DeleteKey, End, PageDown,
+        Find, Select,
         functionKeys: functionKeyRegister(keyEventEmitter, detectSequence, CSI, SS3)
     };
 

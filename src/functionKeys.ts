@@ -4,6 +4,7 @@ import { SequenceDescriptor, detectSequenceType, keyEvents } from "./key";
 
 export function functionKeyRegister(keyEventEmitter: TypedEventEmitter<keyEvents>, detectSequence: detectSequenceType, CSI: SequenceDescriptor, SS3: SequenceDescriptor) {
     const F1 = detectSequence([SS3, 0x50], (codePoints) => {
+        // PF1
         keyEventEmitter.emit('f1', 'f1', codePoints);
         keyEventEmitter.emit('keydown', 'f1', codePoints, 'f1');
     });
@@ -19,6 +20,24 @@ export function functionKeyRegister(keyEventEmitter: TypedEventEmitter<keyEvents
         keyEventEmitter.emit('f4', 'f4', codePoints);
         keyEventEmitter.emit('keydown', 'f4', codePoints, 'f4');
     });
+
+    detectSequence([CSI, '1', '1', 0x7e], (codePoints) => {
+        keyEventEmitter.emit('f1', 'f1', codePoints);
+        keyEventEmitter.emit('keydown', 'f1', codePoints, 'f1');
+    });
+    detectSequence([CSI, '1', '2', 0x7e], (codePoints) => {
+        keyEventEmitter.emit('f2', 'f2', codePoints);
+        keyEventEmitter.emit('keydown', 'f2', codePoints, 'f2');
+    });
+    detectSequence([CSI, '1', '3', 0x7e], (codePoints) => {
+        keyEventEmitter.emit('f3', 'f3', codePoints);
+        keyEventEmitter.emit('keydown', 'f3', codePoints, 'f3');
+    });
+    detectSequence([CSI, '1', '4', 0x7e], (codePoints) => {
+        keyEventEmitter.emit('f4', 'f4', codePoints);
+        keyEventEmitter.emit('keydown', 'f4', codePoints, 'f4');
+    });
+
     const F5 = detectSequence([CSI, '1', '5', 0x7e], (codePoints) => {
         keyEventEmitter.emit('f5', 'f5', codePoints);
         keyEventEmitter.emit('keydown', 'f5', codePoints, 'f5');
