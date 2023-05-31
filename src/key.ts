@@ -311,7 +311,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
         keyEventEmitter.emit('End', 'End', codePoints);
         keyEventEmitter.emit('keydown', 'End', codePoints, 'End');
     });
-    const DeleteKey = detectSequence([CSI, '3', 0x37], (codePoints) => {
+    const DeleteKey = detectSequence([CSI, '3', 0x7e], (codePoints) => {
         keyEventEmitter.emit('DeleteKey', 'DeleteKey', codePoints);
         keyEventEmitter.emit('keydown', 'DeleteKey', codePoints, 'DeleteKey');
     });
