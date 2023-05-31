@@ -1,6 +1,6 @@
 import { getKeyEmitter } from "./key";
 import { getCapture } from "./term";
-export const createCapture = <T extends true | false = true>(doKeyEmit?: T extends true ? true | undefined : false, autoExit: boolean = true): (T extends true ? ReturnType<typeof getKeyEmitter> : ReturnType<typeof getCapture>) => {
+export const createCapture = <T extends true | undefined | false>(doKeyEmit?: T, autoExit: boolean = true): (typeof doKeyEmit extends undefined ? ReturnType<typeof getKeyEmitter> : true extends T ? ReturnType<typeof getKeyEmitter> : ReturnType<typeof getCapture>) => {
     if (doKeyEmit) {
         const capture = getCapture();
         const keyEmitter = getKeyEmitter();

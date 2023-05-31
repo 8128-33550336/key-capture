@@ -300,7 +300,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
             isListening = false;
             process.stdin.off('data', listener);
         },
-        getIsListening: () => isListening
+        getIsCapturing: () => isListening
     };
 };
 
