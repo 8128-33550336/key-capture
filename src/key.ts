@@ -18,6 +18,10 @@ const noShiftSecondHalf = [
     'x', 'y', 'z', '[', '\\', ']', '^', '_'
 ] as const;
 
+const functionKey = [
+    'f1', 'f2',
+] as const
+
 type ascii0x40ControlTypes = { [P in typeof ascii0x40 extends readonly (infer T extends string)[] ? `Control.${T}` : never]: [name: P, codePoint: number] };
 
 type ascii0x50ControlTypes = { [P in typeof ascii0x50 extends readonly (infer T extends string)[] ? `Control.${T}` : never]: [name: P, codePoint: number] };
