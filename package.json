@@ -1,6 +1,6 @@
 {
   "name": "@8128-33550336/key-capture",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "keyboard capture",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
