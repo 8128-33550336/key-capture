@@ -1,6 +1,6 @@
 import { getKeyEmitter } from "./key";
 import { getCapture } from "./term";
-export const createCapture = (doKeyEmit: boolean = true, autoExit: boolean = true) => {
+export const createCapture = <T extends true | undefined | false>(doKeyEmit?: T, autoExit: boolean = true): (typeof doKeyEmit extends undefined ? ReturnType<typeof getKeyEmitter> : true extends T ? ReturnType<typeof getKeyEmitter> : ReturnType<typeof getCapture>) => {
     if (doKeyEmit) {
         const capture = getCapture();
         const keyEmitter = getKeyEmitter();
@@ -26,11 +26,11 @@ export const createCapture = (doKeyEmit: boolean = true, autoExit: boolean = tru
                 capture.stop();
             },
             getIsCapturing: capture.getIsCapturing
-        };
-
+        } as any;
+        // Could you please tell me the best solution?
     } else {
         const capture = getCapture();
 
-        return capture;
+        return capture as any;
     }
 };
