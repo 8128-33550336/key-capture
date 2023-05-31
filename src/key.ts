@@ -296,10 +296,7 @@ export function createKeyEmit(option?: keyEmitOpt) {
     });
 
 
-    const Konami = detectSequence([ArrowUp, ArrowUp, ArrowDown, ArrowDown, ArrowLeft, ArrowRight, ArrowLeft, ArrowRight, 'a', 'b'], (codePoints) => {
-        console.log('exit');
-        process.exit(0);
-    });
+    const Konami = detectSequence([ArrowUp, ArrowUp, ArrowDown, ArrowDown, ArrowLeft, ArrowRight, ArrowLeft, ArrowRight, 'a', 'b']);
 
     const SS3 = detectSequence(['Escape', 0x4f], (codePoints) => {
         keyEventEmitter.emit('SS3', 'SS3', codePoints);
