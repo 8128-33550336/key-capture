@@ -1,5 +1,6 @@
 import { TypedEventEmitter, eventEmitterLogger, eventTypedAddListener } from "@8128-33550336/typedeventemitter";
 import { functionKeyRegister } from "./functionKeys";
+import EventEmitter from "events";
 
 const ascii0x40 = [
     '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
@@ -348,6 +349,9 @@ export function createKeyEmit(option?: keyEmitOpt) {
         Find, Select,
         functionKeys: functionKeyRegister(keyEventEmitter, detectSequence, CSI, SS3)
     };
+
+    // sequence 2 (CSI, SS3), Arrow 4, Edit 8, func 40, hidden 1 + 9
+    (keyEventEmitter as EventEmitter).setMaxListeners(64);
 
     // hide Konami
     (specialKeys as any).Konami = Konami;
