@@ -108,6 +108,10 @@ export interface SequenceDescriptor {
 
 export function createKeyEmit(option?: keyEmitOpt) {
     const keyEventEmitter = new TypedEventEmitter<keyEvents>();
+
+    // sequence 2 (CSI, SS3), Arrow 4, Edit 8, func 40, hidden 1 + 9
+    (keyEventEmitter as EventEmitter).setMaxListeners(64);
+
     const listener = (chunk: Buffer) => {
         const str = chunk.toString('utf8');
         const stringIterator = str[Symbol.iterator]();
@@ -349,9 +353,6 @@ export function createKeyEmit(option?: keyEmitOpt) {
         Find, Select,
         functionKeys: functionKeyRegister(keyEventEmitter, detectSequence, CSI, SS3)
     };
-
-    // sequence 2 (CSI, SS3), Arrow 4, Edit 8, func 40, hidden 1 + 9
-    (keyEventEmitter as EventEmitter).setMaxListeners(64);
 
     // hide Konami
     (specialKeys as any).Konami = Konami;
