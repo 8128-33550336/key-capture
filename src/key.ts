@@ -35,11 +35,11 @@ type shiftFunctionKeyTypes = { [P in
 
 type pageKey = { [P in 'Home' | 'End' | 'PageUp' | 'PageDown' | 'Insert' | 'DeleteKey' | 'Find' | 'Select']: [name: P, codePoint: number[]] };
 
-type ascii0x40ControlTypes = { [P in typeof ascii0x40 extends readonly (infer T extends string)[] ? `Control.${T}` : never]: [name: P, codePoint: number] };
+type ascii0x40ControlTypes = { [P in `Control.${typeof ascii0x40[number]}`]: [name: P, codePoint: number] };
 
-type ascii0x50ControlTypes = { [P in typeof ascii0x50 extends readonly (infer T extends string)[] ? `Control.${T}` : never]: [name: P, codePoint: number] };
-type noShiftFirstHalfCaseTypes = { [P in typeof noShiftFirstHalf extends readonly (infer T extends string)[] ? Lowercase<T> : never]: [name: P, codePoint: number] };
-type noShiftSecondHalfCaseTypes = { [P in typeof noShiftSecondHalf extends readonly (infer T extends string)[] ? Lowercase<T> : never]: [name: P, codePoint: number] };
+type ascii0x50ControlTypes = { [P in `Control.${typeof ascii0x50[number]}`]: [name: P, codePoint: number] };
+type noShiftFirstHalfCaseTypes = { [P in Lowercase<typeof noShiftFirstHalf[number]>]: [name: P, codePoint: number] };
+type noShiftSecondHalfCaseTypes = { [P in Lowercase<typeof noShiftSecondHalf[number]>]: [name: P, codePoint: number] };
 
 type arrowTypes = { [P in 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight']: [name: P, codePoint: number[]] };
 type sequenceType = { [P in 'CSI' | 'SS3']: [name: P, codePoint: number[]] };
