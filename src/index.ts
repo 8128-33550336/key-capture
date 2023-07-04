@@ -7,7 +7,6 @@ export const createCapture = <T extends true | undefined | false>(doKeyEmit?: T,
 
         if (autoExit) {
             keyEmitter.extendSequence.detectSequence(['Control.C', 'Control.C'], () => {
-                console.log('exit');
                 process.exit(0);
             });
         }
@@ -16,12 +15,10 @@ export const createCapture = <T extends true | undefined | false>(doKeyEmit?: T,
             keyEventEmitter: keyEmitter.keyEventEmitter,
             extendSequence: keyEmitter.extendSequence,
             start() {
-                console.log('start');
                 keyEmitter.start();
                 capture.start();
             },
             stop() {
-                console.log('stop');
                 keyEmitter.stop();
                 capture.stop();
             },
