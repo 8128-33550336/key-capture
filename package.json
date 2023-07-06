@@ -1,6 +1,6 @@
 {
   "name": "@8128-33550336/key-capture",
-  "version": "0.7.6",
+  "version": "0.8.0",
   "description": "keyboard capture",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,8 +24,7 @@
     "start": "node dist/main.js"
   },
   "dependencies": {
-    "@8128-33550336/typedeventemitter": "^1.1.2",
-    "node-termios": "^0.1.3"
+    "@8128-33550336/typedeventemitter": "^1.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.2.5",
