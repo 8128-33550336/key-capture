@@ -42,6 +42,10 @@ capture.keyEventEmitter.on("Control.C", () => {
 });
 ```
 
+## 注意
+
+`process.stdin.on('data', listener)`をしているためstopしても止まりません.
+
 # 参考
 
 http://www.setgetweb.com/p/i5/rzaiwspecial.htm
