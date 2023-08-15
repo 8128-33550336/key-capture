@@ -49,10 +49,17 @@ capture.keyEventEmitter.on("Control.C", () => {
 # 参考
 
 http://www.setgetweb.com/p/i5/rzaiwspecial.htm
+
 https://invisible-island.net/xterm/xterm-function-keys.html
-https://web.archive.org/web/20121225024852/http://www.climagic.org/mirrors/VT100_Escape_Codes.html
+
+https://web.archive.org/web/20121225024852/
+
+http://www.climagic.org/mirrors/VT100_Escape_Codes.html
+
 https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Single-character-functions
+
 https://nxmnpg.lemoda.net/ja/5/terminfo
+
 https://invisible-island.net/xterm/ctlseqs/ctlseqs.pdf pp.36-41
 
 # 最後に
